@@ -6,8 +6,10 @@
 
 int main()
 {
+    printf("#######################################################\n");
     printf("### This is program for solving quadratic equations ###\n");
     printf("###         © Nurmatov Umar aka n1njaeng1neer, 2025 ###\n");
+    printf("#######################################################\n");
 
     double coeff_a = 0.0, coeff_b = 0.0, coeff_c = 0.0; // coefficients
     double root_a = 0.0, root_b = 0.0;                  // roots
