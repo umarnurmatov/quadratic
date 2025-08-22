@@ -22,5 +22,5 @@ enum input_err_t input_double(double *d);
 /// @brief validated input of floating-point numeric value until correct value entered
 /// @param d pointer to variable where inputed value will be stored
 /// @return 1 if EOF occured in stdin, 0 otherwise
-int input_double_until_correct(double *d);
+enum input_err_t input_double_until_correct(double *d);
 

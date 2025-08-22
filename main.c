@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "quadratic.h"
+#include "ioutils.h"
 
 int main()
 {
@@ -14,11 +15,11 @@ int main()
     printf("Input equation coefficients [ax² + bx + c = 0]:\n");
 
     printf("\tinput coeff [a]: ");
-    if(input_double_until_correct(&coeff_a)) return 1;
+    if(input_double_until_correct(&coeff_a) == INPUT_ERR_EOF_REACHED) return 1;
     printf("\tinput coeff [b]: ");
-    if(input_double_until_correct(&coeff_b)) return 1;
+    if(input_double_until_correct(&coeff_b) == INPUT_ERR_EOF_REACHED) return 1;
     printf("\tinput coeff [c]: ");
-    if(input_double_until_correct(&coeff_c)) return 1;
+    if(input_double_until_correct(&coeff_c) == INPUT_ERR_EOF_REACHED) return 1;
 
     enum root_cnt_t root_cnt = solve_quadratic_equation(coeff_a, coeff_b, coeff_c, &root_a, &root_b);
     print_quadratic_equation_solution(root_cnt, root_a, root_b);

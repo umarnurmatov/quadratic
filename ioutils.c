@@ -26,18 +26,18 @@ enum input_err_t input_double(double *d)
     }
 }
 
-int input_double_until_correct(double *d)
+enum input_err_t input_double_until_correct(double *d)
 {
     enum input_err_t errcode = INPUT_ERR_NONE;
     do {
         errcode = input_double(d);
         if(errcode == INPUT_ERR_EOF_REACHED) {
             fprintf(stderr, "\n\tEOF reached, exiting.\n");
-            return 1;
+            break;
         }
-        else if(errcode == INPUT_ERR_ASSIGMENT_SUCCESS) {
+        else if(errcode == INPUT_ERR_ASSIGMENT_FAIL) {
             fprintf(stderr, "\tEnter a valid numeric value.\n\t");
         }
     } while(errcode != INPUT_ERR_ASSIGMENT_SUCCESS);
-    return 0;
+    return errcode;
 }
