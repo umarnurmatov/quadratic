@@ -1,13 +1,12 @@
 #pragma once
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
 #include <float.h>
 #include <math.h>
 
-#include "ioutils.h"
-
-static const double EPSILON = 1e-10;
+#include "mathutils.h"
 
 /// @brief quadratic equation's root count
 enum root_cnt_t
@@ -18,12 +17,6 @@ enum root_cnt_t
     ROOT_CNT_INF,
     ROOT_CNT_LINEAR_EQ
 };
-
-/// @brief compares two floating-point variables on equality with precision
-/// @param a pointer to first variable
-/// @param b pointer to second variable
-/// @return 1 if variables are equal, 0 otherwise
-int equal_with_precision(double a, double b);
 
 /// @brief solves quadratic equation
 /// @param [in] coeff_a pointer to variable with coefficient a

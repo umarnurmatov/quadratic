@@ -1,31 +1,24 @@
 #include "quadratic.h"
 
-int equal_with_precision(double a, double b)
-{
-    return fabs(a - b) < EPSILON;
-}
-
 enum root_cnt_t solve_quadratic_equation(double coeff_a, double coeff_b, double coeff_c, double *root_a, double *root_b)
 {
     assert(!isnan(coeff_a) && !isinf(coeff_a));
     assert(!isnan(coeff_b) && !isinf(coeff_b));
     assert(!isnan(coeff_c) && !isinf(coeff_c));
 
-    double zero = 0.0f; // for comparasion
-
-    if(equal_with_precision(coeff_a, zero)) {
-        if(equal_with_precision(coeff_b, zero))
-            return equal_with_precision(coeff_c, zero) ? ROOT_CNT_INF : ROOT_CNT_NO_ROOTS;
+    if(equal_zero(coeff_a)) {
+        if(equal_zero(coeff_b))
+            return equal_zero(coeff_c) ? ROOT_CNT_INF : ROOT_CNT_NO_ROOTS;
         else 
             return ROOT_CNT_LINEAR_EQ;
     }
     else {
-        double discriminant = coeff_b * coeff_b - 4.0f * coeff_a * coeff_c;
-        if(equal_with_precision(discriminant, zero)) {
+        double discriminant = coeff_b * coeff_b - 4.0 * coeff_a * coeff_c;
+        if(equal_zero(discriminant)) {
             *root_a = *root_b = -coeff_b / ( 2 * coeff_a );
             return ROOT_CNT_1;
         }
-        else if (discriminant > zero) {
+        else if (gt_zero(discriminant)) {
             *root_a = ( -coeff_b + sqrt(discriminant) ) / ( 2 * coeff_a ); 
             *root_b = ( -coeff_b - sqrt(discriminant) ) / ( 2 * coeff_a ); 
             return ROOT_CNT_2;
