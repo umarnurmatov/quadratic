@@ -37,10 +37,10 @@ void print_quadratic_equation_solution(enum root_cnt_t root_cnt, double root_a, 
             printf("Equation has no solution\n");
             break;
         case ROOT_CNT_1:
-            printf("Equation has 1 root: %f\n", root_a);
+            printf("Equation has 1 root: %lf\n", root_a);
             break;
         case ROOT_CNT_2:
-            printf("Equation has 2 roots: %f and %f\n", root_a, root_b);
+            printf("Equation has 2 roots: %lf and %lf\n", root_a, root_b);
             break;
         case ROOT_CNT_INF:
             printf("Equation is non-quadratic and contains infinite solutions\n");
