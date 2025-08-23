@@ -19,8 +19,9 @@ enum root_cnt_t solve_quadratic_equation(double coeff_a, double coeff_b, double 
             return ROOT_CNT_1;
         }
         else if (gt_zero(discriminant)) {
-            *root_a = ( -coeff_b + sqrt(discriminant) ) / ( 2 * coeff_a ); 
-            *root_b = ( -coeff_b - sqrt(discriminant) ) / ( 2 * coeff_a ); 
+            double sqrt_discriminant = sqrt(discriminant);
+            *root_a = ( -coeff_b + sqrt_discriminant ) / ( 2 * coeff_a ); 
+            *root_b = ( -coeff_b - sqrt_discriminant ) / ( 2 * coeff_a ); 
             return ROOT_CNT_2;
         }
         else {
