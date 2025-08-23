@@ -3,6 +3,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+#include "assertutils.h"
+
 static const char* ANSI_COLOR_RED    = "\x1b[1;31m";
 static const char* ANSI_COLOR_GREEN  = "\x1b[1;32m";
 static const char* ANSI_COLOR_YELLOW = "\x1b[1;33m";
