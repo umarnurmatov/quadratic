@@ -18,4 +18,4 @@ static const char* ANSI_COLOR_BOLD_BLUE   = "\x1b[1;38;5;20m";
 
 static const char* ANSI_COLOR_RESET       = "\x1b[0m";
 
-void utils_fprintf_with_mode(FILE* stream, const char* mode, const char* fmtstring, ...);
+void utils_colored_fprintf(FILE* stream, const char* mode, const char* fmtstring, ...);
