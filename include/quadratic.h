@@ -26,9 +26,3 @@ enum root_cnt_t
 /// @param [out] root_b second equation root
 /// @return see root_cnt_t for explanations
 enum root_cnt_t solve_quadratic_equation(double coeff_a, double coeff_b, double coeff_c, double *root_a, double *root_b);
-
-/// @brief processes and prints quadratic equation solutions  
-/// @param root_cnt see root_cnt_t for explanations
-/// @param root_a first root
-/// @param root_b second root
-void print_quadratic_equation_solution(enum root_cnt_t root_cnt, double root_a, double root_b);

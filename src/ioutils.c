@@ -41,3 +41,26 @@ enum input_err_t input_double_until_correct(double *d)
     } while(errcode != INPUT_ERR_ASSIGMENT_SUCCESS);
     return errcode;
 }
+
+void print_quadratic_equation_solution(enum root_cnt_t root_cnt, double root_a, double root_b)
+{
+    switch(root_cnt) {
+        case ROOT_CNT_NO_ROOTS:
+            printf("Equation has no solution\n");
+            break;
+        case ROOT_CNT_1:
+            printf("Equation has 1 root: %lf\n", root_a);
+            break;
+        case ROOT_CNT_2:
+            printf("Equation has 2 roots: %lf and %lf\n", root_a, root_b);
+            break;
+        case ROOT_CNT_INF:
+            printf("Equation is non-quadratic and contains infinite solutions\n");
+            break;
+        case ROOT_CNT_LINEAR_EQ:
+            printf("Equation is linear. This program is not intended for solving linear equations.\n");
+            break;
+        default:
+            break;
+    }
+}
