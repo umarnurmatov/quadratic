@@ -2,6 +2,7 @@
 
 #include <stdarg.h>
 #include <stdio.h>
+#include <unistd.h>
 
 #include "assertutils.h"
 
@@ -20,4 +21,9 @@ UNUSED static const char* ANSI_COLOR_BOLD_BLUE   = "\x1b[1;38;5;20m";
 
 UNUSED static const char* ANSI_COLOR_RESET       = "\x1b[0m";
 
-void utils_colored_fprintf(FILE* stream, const char* mode, const char* fmtstring, ...);
+/// @brief function to print text with ANSI mode; checks if stream is console
+/// @param stream output stream
+/// @param mode ANSI color mode 
+/// @param fmtstring formatted string 
+void utils_colored_fprintf(FILE* stream, const char* mode, const char* fmtstring, ...)
+    __attribute__ ((format (printf, 3, 4)));
