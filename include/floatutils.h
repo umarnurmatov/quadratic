@@ -1,23 +1,11 @@
 #pragma once
 
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
+#include <math.h>
 
-/// @brief converts double to integer bit-by-bit
-/// @param x variable to convert
-/// @return bit-by-bit converted x
-uint64_t utils_double_to_integer(double x);
+#include "bitutils.h"
 
-/// @brief extracts exponent from double-precision floating-point variable
-/// @param x double-precision floating-point variable
-/// @return exponent of x 
-uint16_t utils_get_double_exponent(double x);
-
-/// @brief extracts fraction from double-precision floating-point variable
-/// @param x double-precision floating-point variable
-/// @return fraction of x 
-uint64_t utils_get_double_fraction(double x);
+static const double EPSILON = 1e-10;
+static const double ZERO = 0.0;
 
 /// @brief checks if double-precision floating-point variable is NaN
 /// @param x variable to check
@@ -33,3 +21,24 @@ int utils_isinf(double x);
 /// @param x variable to check
 /// @return 1 if x is finite, 0 otherwise
 int utils_isfinite(double x);
+
+/// @brief compares two floating-point variables on equality with precision
+/// @param a pointer to first variable
+/// @param b pointer to second variable
+/// @return 1 if variables are equal, 0 otherwise
+int utils_equal_with_precision(double a, double b);
+
+/// @brief compares value with zero
+/// @param a pointer to variable
+/// @return 1 if value equals zero, 0 otherwise
+int utils_equal_zero(double a);
+
+/// @brief compares value with zero
+/// @param a pointer to variable
+/// @return 1 if value greater than zero, 0 otherwise
+int utils_gt_zero(double a);
+
+/// @brief compares value with zero
+/// @param a pointer to variable
+/// @return 1 if value less than zero, 0 otherwise
+int utils_lt_zero(double a);

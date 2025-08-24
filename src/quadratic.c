@@ -6,19 +6,19 @@ enum root_cnt_t solve_quadratic_equation(double coeff_a, double coeff_b, double 
     assert(!isnan(coeff_b) && !isinf(coeff_b));
     assert(!isnan(coeff_c) && !isinf(coeff_c));
 
-    if(equal_zero(coeff_a)) {
-        if(equal_zero(coeff_b))
-            return equal_zero(coeff_c) ? ROOT_CNT_INF : ROOT_CNT_NO_ROOTS;
+    if(utils_equal_zero(coeff_a)) {
+        if(utils_equal_zero(coeff_b))
+            return utils_equal_zero(coeff_c) ? ROOT_CNT_INF : ROOT_CNT_NO_ROOTS;
         else 
             return ROOT_CNT_LINEAR_EQ;
     }
     else {
         double discriminant = coeff_b * coeff_b - 4.0 * coeff_a * coeff_c;
-        if(equal_zero(discriminant)) {
+        if(utils_equal_zero(discriminant)) {
             *root_a = *root_b = -coeff_b / ( 2 * coeff_a );
             return ROOT_CNT_1;
         }
-        else if (gt_zero(discriminant)) {
+        else if (utils_gt_zero(discriminant)) {
             double sqrt_discriminant = sqrt(discriminant);
             *root_a = ( -coeff_b + sqrt_discriminant ) / ( 2 * coeff_a ); 
             *root_b = ( -coeff_b - sqrt_discriminant ) / ( 2 * coeff_a ); 

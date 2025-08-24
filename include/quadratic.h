@@ -6,7 +6,7 @@
 #include <float.h>
 #include <math.h>
 
-#include "mathutils.h"
+#include "floatutils.h"
 
 /// @brief quadratic equation's root count
 enum root_cnt_t
