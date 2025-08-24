@@ -1,4 +1,4 @@
-#include "bitutils.h"`
+#include "bitutils.h"
 
 const int LEN_DOUBLE_PRECISION          = 64;
 const int LEN_FRACTION_DOUBLE_PRECISION = 52;
