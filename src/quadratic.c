@@ -7,10 +7,20 @@ enum root_cnt_t solve_quadratic_equation(double coeff_a, double coeff_b, double 
     assert(!isnan(coeff_c) && !isinf(coeff_c));
 
     if(utils_equal_zero(coeff_a)) {
-        if(utils_equal_zero(coeff_b))
-            return utils_equal_zero(coeff_c) ? ROOT_CNT_INF : ROOT_CNT_NO_ROOTS;
-        else 
+        if(utils_equal_zero(coeff_b)) {
+            if(utils_equal_zero) {
+                *root_a = INFINITY; 
+                return ROOT_CNT_INF;
+            }
+            else {
+                *root_a = *root_b = NAN;
+                return ROOT_CNT_NO_ROOTS;
+            }
+        }
+        else {
+            *root_a = *root_b = NAN;
             return ROOT_CNT_LINEAR_EQ;
+        }
     }
     else {
         double discriminant = coeff_b * coeff_b - 4.0 * coeff_a * coeff_c;
@@ -25,6 +35,7 @@ enum root_cnt_t solve_quadratic_equation(double coeff_a, double coeff_b, double 
             return ROOT_CNT_2;
         }
         else {
+            *root_a = *root_b = NAN;
             return ROOT_CNT_NO_ROOTS;
         }
     }
