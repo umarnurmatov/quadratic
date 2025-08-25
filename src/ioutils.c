@@ -42,6 +42,45 @@ enum input_err_t input_double_until_correct(double *d)
     return errcode;
 }
 
+FILE *open_file(const char *filename, const char *modes)
+{
+    utils_assert(filename != NULL);
+
+    FILE* file = fopen(filename, modes);
+
+    if(file == NULL)
+        utils_colored_fprintf(
+            stderr,
+            ANSI_COLOR_BOLD_RED,
+            "Could not open file <%s>",
+            filename 
+        );
+
+    return file;
+}
+
+size_t get_file_size(FILE *file)
+{
+    utils_assert(file != NULL);
+
+    fseek(file, 0L, SEEK_END);
+    long size_bytes = ftell(file);
+
+    fseek(file, 0L, SEEK_SET);
+
+    return (size_t)size_bytes;
+}
+
+char* bufferize_file(FILE *file)
+{
+    utils_assert(file != NULL);
+
+    size_t file_size_bytes = get_file_size(file);
+    char* file_buffer = (char*)calloc(file_size_bytes, sizeof(char));
+    fread(file_buffer, sizeof(char), file_size_bytes, file);
+    return file_buffer;
+}
+
 void print_quadratic_equation_solution(enum root_cnt_t root_cnt, double root_a, double root_b)
 {
     switch(root_cnt) {

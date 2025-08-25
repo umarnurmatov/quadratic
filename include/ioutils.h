@@ -3,6 +3,8 @@
 #include <stdio.h>
 
 #include "quadratic.h"
+#include "assertutils.h"
+#include "colorutils.h"
 
 /// @brief input error types
 enum input_err_t
@@ -25,6 +27,22 @@ enum input_err_t input_double(double *d);
 /// @param d pointer to variable where inputed value will be stored
 /// @return 1 if EOF occured in stdin, 0 otherwise
 enum input_err_t input_double_until_correct(double *d);
+
+/// @brief open file
+/// @param filename filename
+/// @param modes file open modes
+/// @return pointer to filestream if file opened successfully, NULL otherwise
+FILE* open_file(const char *filename, const char *modes);
+
+/// @brief get file size in bytes
+/// @param file filestream
+/// @return file size in bytes 
+size_t get_file_size(FILE* file);
+
+/// @brief reads file to buffer and returns pointer to that buffer
+/// @param file file to bufferize
+/// @return pointer to buffer 
+char* bufferize_file(FILE* file);
 
 /// @brief processes and prints quadratic equation solutions  
 /// @param root_cnt see root_cnt_t for explanations
