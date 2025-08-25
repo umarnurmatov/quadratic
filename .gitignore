@@ -59,3 +59,7 @@ build/
 
 # vscode config
 .vscode/
+
+# docs
+latex/
+html/
