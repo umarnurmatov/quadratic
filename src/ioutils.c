@@ -74,7 +74,7 @@ int create_dir(const char *path)
     __mode_t permissions = S_IRWXU | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;
     int err = mkdir(path, permissions);
 
-    if(err = -1) 
+    if(err == -1) 
         return 1;
     return 0;
 }
