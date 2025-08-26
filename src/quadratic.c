@@ -9,9 +9,9 @@
 
 enum root_cnt_t solve_quadratic_equation(double coeff_a, double coeff_b, double coeff_c, double *root_a, double *root_b)
 {
-    assert(!isnan(coeff_a) && !isinf(coeff_a));
-    assert(!isnan(coeff_b) && !isinf(coeff_b));
-    assert(!isnan(coeff_c) && !isinf(coeff_c));
+    assert(!isnan(coeff_a) && isfinite(coeff_a));
+    assert(!isnan(coeff_b) && isfinite(coeff_b));
+    assert(!isnan(coeff_c) && isfinite(coeff_c));
 
     if(utils_equal_zero(coeff_a)) {
         if(utils_equal_zero(coeff_b)) {
