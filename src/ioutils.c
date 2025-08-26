@@ -72,8 +72,11 @@ int create_dir(const char *path)
     utils_assert(path != NULL);
 
     __mode_t permissions = S_IRWXU | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;
+    int err = mkdir(path, permissions);
 
-    return mkdir(path, permissions);
+    if(err = -1) 
+        return 1;
+    return 0;
 }
 
 char *get_current_working_dir()
