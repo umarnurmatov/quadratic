@@ -1,4 +1,14 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <unistd.h>
+#include <time.h>
+#include <threads.h>
+#include <linux/limits.h>
+
 #include "logutils.h"
+#include "ioutils.h"
+#include "assertutils.h"
 
 static const char* LOG_RELATIVE_FILEPATH = "log/log.txt";
 static FILE* log_stream = NULL;

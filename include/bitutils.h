@@ -1,8 +1,6 @@
 #pragma once
 
 #include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
 
 /// @brief converts double to integer bit-by-bit
 /// @param x variable to convert

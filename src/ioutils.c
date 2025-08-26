@@ -1,4 +1,11 @@
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <linux/limits.h>
+
 #include "ioutils.h"
+#include "assertutils.h"
+#include "colorutils.h"
 
 void clear_stdin_buffer()
 {

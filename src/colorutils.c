@@ -1,3 +1,6 @@
+#include <stdarg.h>
+#include <unistd.h>
+
 #include "colorutils.h"
 
 void utils_colored_fprintf(FILE *stream, const char *mode, const char *fmtstring, ...)

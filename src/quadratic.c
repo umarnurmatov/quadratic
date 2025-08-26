@@ -1,3 +1,10 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+#include <float.h>
+#include <math.h>
+
+#include "floatutils.h"
 #include "quadratic.h"
 
 enum root_cnt_t solve_quadratic_equation(double coeff_a, double coeff_b, double coeff_c, double *root_a, double *root_b)

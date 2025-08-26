@@ -1,10 +1,8 @@
 #pragma once
-#include <stdlib.h>
+
 #include <stdio.h>
 
 #include "quadratic.h"
-#include "assertutils.h"
-#include "colorutils.h"
 
 /// @brief input error types
 enum input_err_t

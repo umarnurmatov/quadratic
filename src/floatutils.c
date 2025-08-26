@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "floatutils.h"
 
 const uint16_t NAN_INF_EXPONENT_DOUBLE_PRECISION = 0x07ff;

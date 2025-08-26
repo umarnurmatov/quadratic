@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "logutils.h"
 #include "quadratic.h"
 #include "ioutils.h"
 #include "colorutils.h"

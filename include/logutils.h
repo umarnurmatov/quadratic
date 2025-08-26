@@ -1,14 +1,5 @@
 #pragma once
 
-// FIXME move headers to cpp
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <unistd.h>
-#include <time.h>
-
-#include "ioutils.h"
-
 /// @brief log level
 ///        LOG_LEVEL_ERR is the highest priority,
 ///        LOG_LEVEL_DEBUG is the lowest priority

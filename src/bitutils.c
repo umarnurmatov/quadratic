@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include <string.h>
+
 #include "bitutils.h"
 
 const int LEN_DOUBLE_PRECISION          = 64;

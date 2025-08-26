@@ -1,5 +1,10 @@
+#include <unistd.h>
+#include <stdlib.h>
+
 #include "quadratic.h"
 #include "ioutils.h"
+#include "colorutils.h"
+#include "floatutils.h"
 
 static const size_t TEST_DATA_NUM_FIELDS = 5;
 /*
@@ -155,9 +160,3 @@ int utils_equal_with_precision_nan_inf(double a, double b)
     else if(utils_equal_with_precision(a, b)) return 1;
     return 0;
 }
-
-// FIXME почему везде используетсяя FILE* а не FILE
-// FIXME что происходит до main и после него
-// FIXME doxygen
-// FIXME README 
-

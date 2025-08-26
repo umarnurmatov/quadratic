@@ -1,14 +1,12 @@
 #pragma once
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <execinfo.h>
-
-#include "colorutils.h"
-
+#ifndef NDEBUG
 #define utils_assert(expression) !!(expression) \
                                     ? (void)(0) \
                                     : utils_assert_fail(#expression, __FILE__, __LINE__)
+#else
+#define utils_assert(expression) (void)(0)
+#endif
 
 /// @brief prints stack trace to stderr 
 void utils_print_stacktrace(void);

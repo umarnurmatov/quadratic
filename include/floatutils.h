@@ -1,7 +1,5 @@
 #pragma once
 
-#include <math.h>
-
 #include "bitutils.h"
 
 static const double EPSILON = 1e-10;
