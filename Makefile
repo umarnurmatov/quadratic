@@ -2,6 +2,7 @@ BUILD_DIR := build
 SRC_DIR := src
 TEST_DIR := test
 INCLUDE_DIR := include
+LOG_DIR := log
 EXECUTABLE := quadratic.out
 TEST_EXECUTABLE := test_quadratic.out
 
@@ -42,5 +43,6 @@ test: $(BUILD_DIR)/$(TEST_EXECUTABLE)
 .PHONY: clean
 clean:
 	rm -rf $(BUILD_DIR)
+	rm -rf $(LOG_DIR)
 
 -include $(DEPS)

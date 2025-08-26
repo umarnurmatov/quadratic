@@ -6,8 +6,14 @@
 #include "ioutils.h"
 #include "colorutils.h"
 
+static const char* LOG_FILENAME = "log.txt";
+static const char* LOG_PATH = "log";
+
 int main()
 {
+    if(utils_init_log(LOG_FILENAME, LOG_PATH) != LOG_INIT_SUCCESS)
+        return 1;
+
     utils_colored_fprintf(
         stdout, 
         ANSI_COLOR_BOLD_GREEN, 
@@ -31,6 +37,8 @@ int main()
 
     enum root_cnt_t root_cnt = solve_quadratic_equation(coeff_a, coeff_b, coeff_c, &root_a, &root_b);
     print_quadratic_equation_solution(root_cnt, root_a, root_b);
+
+    utils_end_log(); // FIXME atexit возможно
 
     return 0;
 }

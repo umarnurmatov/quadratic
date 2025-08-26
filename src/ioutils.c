@@ -66,6 +66,21 @@ FILE *open_file(const char *filename, const char *modes)
     return file;
 }
 
+int create_dir(const char *path)
+{
+
+    utils_assert(path != NULL);
+
+    __mode_t permissions = S_IRWXU | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;
+
+    return mkdir(path, permissions);
+}
+
+char *get_current_working_dir()
+{
+    return getcwd(NULL, PATH_MAX);
+}
+
 size_t get_file_size(FILE *file)
 {
     utils_assert(file != NULL);

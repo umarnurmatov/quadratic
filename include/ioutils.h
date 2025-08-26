@@ -32,6 +32,15 @@ enum input_err_t input_double_until_correct(double *d);
 /// @return pointer to filestream if file opened successfully, NULL otherwise
 FILE* open_file(const char *filename, const char *modes);
 
+/// @brief creates directory
+/// @param path full path
+/// @return 0 if dir created successfully, 1 otherwise
+int create_dir(const char* path);
+
+/// @brief returns string containing cwd path, buffer is allocated internally
+/// @return pointer to string buffer on success, NULL otherwise 
+char* get_current_working_dir();
+
 /// @brief get file size in bytes
 /// @param file filestream
 /// @return file size in bytes 

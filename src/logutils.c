@@ -4,39 +4,81 @@
 #include <unistd.h>
 #include <time.h>
 #include <threads.h>
+#include <string.h>
 #include <linux/limits.h>
 
 #include "logutils.h"
 #include "ioutils.h"
 #include "assertutils.h"
 
-static const char* LOG_RELATIVE_FILEPATH = "log/log.txt";
-static FILE* log_stream = NULL;
-static enum log_level_t log_level_glob = LOG_LEVEL_DEBUG;
 static const int MAX_TIME_STR_LEN = 70;
 
-// FIXME Pass filename
-void utils_init_log(void)
+struct _log_data_t
 {
-    char* full_path = realpath(LOG_RELATIVE_FILEPATH, NULL);
-    log_stream = open_file(full_path, "w");
-    free(full_path);
+    FILE* stream;
+    mtx_t stream_mtx;
+    enum log_level_t level_glob;
+};
 
-    if(log_stream == NULL) 
-        log_stream = stderr;
+static struct _log_data_t _log_data = {
+    .stream = NULL,
+    .level_glob = LOG_LEVEL_DEBUG
+};
+
+enum log_err_t utils_init_log(const char* filename, const char* relpath)
+{
+    utils_assert(filename != NULL);
+    utils_assert(relpath != NULL);
+
+    char* cwd_path = get_current_working_dir();
+
+    size_t cwd_path_len = strlen(cwd_path);
+    size_t relpath_len = strlen(relpath);
+    size_t filename_len = strlen(filename);
+
+    char* full_path = 
+        (char*)calloc(
+            1, 
+            cwd_path_len + relpath_len + (size_t)3
+        );
+    sprintf(full_path, "%s/%s", cwd_path, relpath);
+    if(!create_dir(full_path))
+        return LOG_INIT_DIR_CREATE_ERR;
+    
+    char* full_filepath = 
+        (char*)calloc(
+            1, 
+            cwd_path_len + relpath_len + filename_len + (size_t)3
+        );
+    sprintf(full_filepath, "%s/%s", full_path, filename);
+    _log_data.stream = open_file(full_filepath, "a");
+
+    free(cwd_path);
+    free(full_path);
+    free(full_filepath);
+
+    if(_log_data.stream == NULL) 
+        _log_data.stream = stderr;
+
+    if(!mtx_init(&_log_data.stream_mtx, mtx_plain))
+        return LOG_INIT_MTX_INIT_ERR;
+
+    return LOG_INIT_SUCCESS;
 }
 
 void utils_end_log(void)
 {
-    utils_assert(log_stream != NULL);
+    utils_assert(_log_data.stream != NULL);
 
-    int is_console = isatty(fileno(log_stream));
-    if(!is_console) fclose(log_stream);
+    int is_console = isatty(fileno(_log_data.stream));
+    if(!is_console) fclose(_log_data.stream);
+
+    mtx_destroy(&_log_data.stream_mtx);
 }
 
 void utils_set_global_log_level(enum log_level_t _log_level_glob)
 {
-    log_level_glob = _log_level_glob;
+    _log_data.level_glob = _log_level_glob;
 }
 
 const char* utils_get_log_level_str(enum log_level_t log_level)
@@ -62,20 +104,34 @@ const char* utils_get_log_level_str(enum log_level_t log_level)
 
 void utils_log(enum log_level_t log_level, const char *fmtstring, ...)
 {
-    if(log_level > log_level_glob)
+    if(log_level > _log_data.level_glob)
         return;
 
-    utils_assert(log_stream != NULL);
+    utils_assert(_log_data.stream != NULL);
+
+    mtx_lock(&_log_data.stream_mtx);
+
+    thrd_t cur_thread = thrd_current();
 
     const char* log_level_str = utils_get_log_level_str(log_level);
     time_t cur_time = time(NULL);
     struct tm* iso_time = localtime(&cur_time);
     char time_buff[MAX_TIME_STR_LEN];
-    strftime(time_buff, sizeof(time_buff), "%A %c", iso_time);
-    fprintf(log_stream, "[%s] [%s] ", log_level_str, time_buff);
+    strftime(time_buff, sizeof(time_buff), "%F %T", iso_time);
+    fprintf(
+        _log_data.stream, 
+        "[%s] [%s] [TID %lu] ", 
+        log_level_str, 
+        time_buff, 
+        cur_thread
+    );
 
     va_list va_arg_list;
     va_start(va_arg_list, fmtstring);
-    vfprintf(log_stream, fmtstring, va_arg_list);
+    vfprintf(_log_data.stream, fmtstring, va_arg_list);
     va_end(va_arg_list);
+
+    fputc('\n', _log_data.stream);
+
+    mtx_unlock(&_log_data.stream_mtx);
 }
