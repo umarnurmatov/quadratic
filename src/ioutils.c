@@ -59,7 +59,7 @@ FILE *open_file(const char *filename, const char *modes)
         utils_colored_fprintf(
             stderr,
             ANSI_COLOR_BOLD_RED,
-            "Could not open file <%s>",
+            "Could not open file <%s>\n",
             filename 
         );
 
