@@ -8,7 +8,7 @@ enum root_cnt_t solve_quadratic_equation(double coeff_a, double coeff_b, double 
 
     if(utils_equal_zero(coeff_a)) {
         if(utils_equal_zero(coeff_b)) {
-            if(utils_equal_zero) {
+            if(utils_equal_zero(coeff_c)) {
                 *root_a = INFINITY; 
                 return ROOT_CNT_INF;
             }
