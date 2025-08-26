@@ -42,8 +42,12 @@ enum log_err_t utils_init_log(const char* filename, const char* relpath)
             cwd_path_len + relpath_len + (size_t)3
         );
     sprintf(full_path, "%s/%s", cwd_path, relpath);
-    if(!create_dir(full_path))
+
+    if(!create_dir(full_path)) {
+        free(cwd_path);
+        free(full_path);
         return LOG_INIT_DIR_CREATE_ERR;
+    }
     
     char* full_filepath = 
         (char*)calloc(
@@ -60,7 +64,7 @@ enum log_err_t utils_init_log(const char* filename, const char* relpath)
     if(_log_data.stream == NULL) 
         _log_data.stream = stderr;
 
-    if(!mtx_init(&_log_data.stream_mtx, mtx_plain))
+    if(mtx_init(&_log_data.stream_mtx, mtx_plain) != thrd_success)
         return LOG_INIT_MTX_INIT_ERR;
 
     return LOG_INIT_SUCCESS;
