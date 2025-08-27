@@ -63,3 +63,6 @@ build/
 # docs
 latex/
 html/
+
+#logs
+log/
