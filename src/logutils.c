@@ -9,9 +9,9 @@
 #include <string.h>
 #include <linux/limits.h>
 
-#include "logutils.h"
 #include "ioutils.h"
 #include "assertutils.h"
+#include "threadutils.h"
 
 static const int MAX_TIME_STR_LEN = 70;
 
@@ -62,7 +62,7 @@ enum log_err_t utils_init_log(const char* filename, const char* relpath)
     if(_log_data.stream == NULL) 
         _log_data.stream = stderr;
 
-    if(mtx_init(&_log_data.stream_mtx, mtx_plain) != thrd_success)
+    if(utils_mtx_init(&_log_data.stream_mtx, mtx_plain) != thrd_success)
         return LOG_INIT_MTX_INIT_ERR;
 
     return LOG_INIT_SUCCESS;
@@ -75,7 +75,7 @@ void utils_end_log(void)
     int is_console = isatty(fileno(_log_data.stream));
     if(!is_console) fclose(_log_data.stream);
 
-    mtx_destroy(&_log_data.stream_mtx);
+    utils_mtx_destroy(&_log_data.stream_mtx);
 }
 
 void utils_set_global_log_level(enum log_level_t _log_level_glob)
@@ -111,7 +111,7 @@ void utils_log(enum log_level_t log_level, const char *fmtstring, ...)
 
     utils_assert(_log_data.stream != NULL);
 
-    mtx_lock(&_log_data.stream_mtx);
+    utils_mtx_lock(&_log_data.stream_mtx);
 
     thrd_t cur_thread = thrd_current();
 
@@ -135,5 +135,5 @@ void utils_log(enum log_level_t log_level, const char *fmtstring, ...)
 
     fputc('\n', _log_data.stream);
 
-    mtx_unlock(&_log_data.stream_mtx);
+    utils_mtx_unlock(&_log_data.stream_mtx);
 }
