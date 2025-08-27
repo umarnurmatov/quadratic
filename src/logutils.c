@@ -45,11 +45,7 @@ enum log_err_t utils_init_log(const char* filename, const char* relpath)
         );
     sprintf(full_path, "%s/%s", cwd_path, relpath);
 
-    if(!create_dir(full_path)) {
-        free(cwd_path);
-        free(full_path);
-        return LOG_INIT_DIR_CREATE_ERR;
-    }
+    create_dir(full_path);
     
     char* full_filepath = 
         (char*)calloc(

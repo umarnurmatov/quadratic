@@ -14,7 +14,6 @@ enum log_level_t
 /// @brief logging functions errors
 enum log_err_t
 {
-    LOG_INIT_DIR_CREATE_ERR,
     LOG_INIT_MTX_INIT_ERR,
     LOG_INIT_SUCCESS
 };
