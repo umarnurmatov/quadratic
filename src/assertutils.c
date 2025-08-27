@@ -1,8 +1,9 @@
+#include "assertutils.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <execinfo.h>
 
-#include "assertutils.h"
 #include "colorutils.h"
 
 static const int MAX_STACKTRACE_SIZE = 256;

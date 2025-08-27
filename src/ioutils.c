@@ -1,9 +1,10 @@
+#include "ioutils.h"
+
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <linux/limits.h>
 
-#include "ioutils.h"
 #include "assertutils.h"
 #include "colorutils.h"
 
@@ -123,6 +124,8 @@ void print_quadratic_equation_solution(enum root_cnt_t root_cnt, double root_a, 
             break;
         case ROOT_CNT_LINEAR_EQ:
             printf("Equation is linear. This program is not intended for solving linear equations.\n");
+            break;
+        case ROOT_CNT_NONE:
             break;
         default:
             break;
