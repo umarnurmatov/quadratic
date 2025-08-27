@@ -10,13 +10,18 @@
 static const char* LOG_FILENAME = "log.txt";
 static const char* LOG_PATH = "log";
 
+static const int GUI_WINDOW_WIDTH = 1000;
+static const int GUI_WINDOW_HEIGHT = 800;
+
+// FIXME добавить argc argv
 int main()
 {
     if(utils_init_log(LOG_FILENAME, LOG_PATH) != LOG_INIT_SUCCESS)
         return 1;
 
-    if(utils_init_gui(1000, 1000))
+    if(utils_gui_init(GUI_WINDOW_WIDTH, GUI_WINDOW_HEIGHT) != GUI_ERR_SUCCESS)
         return 1;
+    utils_gui_set_coord_origin(GUI_WINDOW_WIDTH / 2, GUI_WINDOW_HEIGHT / 2);
 
     utils_colored_fprintf(
         stdout, 
@@ -34,19 +39,30 @@ int main()
 
     printf("\tinput coeff [a]: ");
     if(input_double_until_correct(&coeff_a) == INPUT_ERR_EOF_REACHED) return 1;
+
     printf("\tinput coeff [b]: ");
     if(input_double_until_correct(&coeff_b) == INPUT_ERR_EOF_REACHED) return 1;
+
     printf("\tinput coeff [c]: ");
     if(input_double_until_correct(&coeff_c) == INPUT_ERR_EOF_REACHED) return 1;
 
     enum root_cnt_t root_cnt = solve_quadratic_equation(coeff_a, coeff_b, coeff_c, &root_a, &root_b);
     print_quadratic_equation_solution(root_cnt, root_a, root_b);
-
     
-    while(!utils_render_loop_gui())
-        utils_show_equation_gui(coeff_a, coeff_b, coeff_c);
+    while(utils_gui_render_loop() == GUI_STATUS_CONTINUE) {
+        utils_gui_clear_render(GUI_COLOR_BLACK);
 
-    utils_end_gui();
+        if(utils_gui_render_coord_axes(GUI_COLOR_WHITE) != GUI_ERR_SUCCESS)
+            return 1;
+
+        if(utils_gui_render_graph(
+            GUI_COLOR_GREEN, coeff_a, coeff_b, coeff_c) != GUI_ERR_SUCCESS)
+            return 1;
+
+        utils_gui_show();
+    }
+
+    utils_gui_end();
 
     utils_end_log(); // FIXME atexit возможно
 
