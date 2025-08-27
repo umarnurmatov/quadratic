@@ -36,69 +36,100 @@ enum test_err_t
     TEST_ERR_FILE_READ_SUCCESS
 };
 
-enum test_err_t all_test(const char* test_input_filename);
+enum test_err_t all_test(const char* test_input_filename, int* test_passed, int* test_failed);
 enum test_err_t one_test(struct test_data_t* test_data);
 enum test_err_t read_one_test(char* filebuffer, struct test_data_t* test_data, int* bytes_read);
 int utils_equal_with_precision_nan_inf(double a, double b);
 
 int main()
 {
-    enum test_err_t test_err = all_test(TEST_INPUT_RELATIVE_FILEPATH);
+    int test_passed = 0, test_failed = 0;
+    enum test_err_t test_err = all_test(
+        TEST_INPUT_RELATIVE_FILEPATH,
+        &test_passed,
+        &test_failed
+    );
 
     switch(test_err) {
-        case TEST_ERR_TEST_FAIL:
-        case TEST_ERR_FILE_OPEN_ERR:
-        case TEST_ERR_FILE_READ_ERR:
-            return 1;
-            break;
         case TEST_ERR_TEST_SUCCESS:
-        case TEST_ERR_FILE_READ_SUCCESS:
+            utils_colored_fprintf(
+                stdout, 
+                ANSI_COLOR_BOLD_GREEN, 
+                "# %d test(-s) passed\n",
+                test_passed
+            );
             break;
-        default:
+        case TEST_ERR_TEST_FAIL:
+            utils_colored_fprintf(
+                stdout, 
+                ANSI_COLOR_BOLD_RED, 
+                "# %d test(-s) passed, "
+                "%d test(-s) failed\n", 
+                test_passed,
+                test_failed
+            );
+            break;
+        case TEST_ERR_FILE_OPEN_ERR:
+            utils_colored_fprintf(
+                stderr, 
+                ANSI_COLOR_BOLD_RED, 
+                "# Error opening test file\n"
+            );
+            return 1;
+        case TEST_ERR_FILE_READ_ERR:
+            utils_colored_fprintf(
+                stderr, 
+                ANSI_COLOR_BOLD_RED, 
+                "# Error reading from test file\n"
+            );
+            return 1;
+        case TEST_ERR_FILE_READ_SUCCESS:
             break;
     }
 
     return 0;
 }
 
-enum test_err_t all_test(const char* test_input_filename)
+enum test_err_t all_test(const char* test_input_filename, int* test_passed, int* test_failed)
 {
     utils_assert(test_input_filename != NULL);
+    utils_assert(test_passed != NULL);
+    utils_assert(test_failed != NULL);
+
+    enum test_err_t err_ret = TEST_ERR_TEST_SUCCESS;
 
     char* test_file_realpath = realpath(test_input_filename, NULL);
     FILE* test_file = open_file(test_file_realpath, "r");
+    free(test_file_realpath);
     if(test_file == NULL)
         return TEST_ERR_FILE_OPEN_ERR;
-    free(test_file_realpath);
 
     char* test_file_buf = bufferize_file(test_file);
     size_t test_file_size = get_file_size(test_file);
     
     char* test_file_buf_ptr = test_file_buf;
     int bytes_read = 0;
-    int test_cnt = 0;
     struct test_data_t test_data;
     while(test_file_buf_ptr - test_file_buf < (long)test_file_size) {
-        if(read_one_test(test_file_buf_ptr, &test_data, &bytes_read) == TEST_ERR_FILE_READ_ERR)
-            return TEST_ERR_FILE_READ_ERR; 
-        if(one_test(&test_data) == TEST_ERR_TEST_FAIL)
-            return TEST_ERR_TEST_FAIL;
-        test_file_buf_ptr += bytes_read;
-        ++test_cnt;
-    }
+        if(read_one_test(test_file_buf_ptr, &test_data, &bytes_read) == TEST_ERR_FILE_READ_ERR) {
+            err_ret = TEST_ERR_FILE_READ_ERR; 
+            break;
+        }
 
-    utils_colored_fprintf(
-        stdout, 
-        ANSI_COLOR_BOLD_GREEN, 
-        "%d test%c passed successfully\n", 
-        test_cnt,
-        test_cnt == 1 ? ' ' : 's'
-    );
+        if(one_test(&test_data) == TEST_ERR_TEST_FAIL) {
+            err_ret = TEST_ERR_TEST_FAIL;
+            ++(*test_passed);
+        }
+        else 
+            ++(*test_failed);
+
+        test_file_buf_ptr += bytes_read;
+    }
 
     fclose(test_file);
     free(test_file_buf);
 
-    return TEST_ERR_TEST_SUCCESS;
+    return err_ret;
 }
 
 enum test_err_t one_test(struct test_data_t* test_data)
@@ -120,7 +151,11 @@ enum test_err_t one_test(struct test_data_t* test_data)
         utils_colored_fprintf(
             stderr, 
             ANSI_COLOR_BOLD_RED, 
-            "Test failed. Expected: %lf, %lf, actual: %lf, %lf\n",
+            "# Test [a = %lf, b = %lf, c = %lf] failed.\n" 
+            "# Expected: %lf, %lf, actual: %lf, %lf\n\n",
+            test_data->coeff_a,
+            test_data->coeff_b,
+            test_data->coeff_c,
             test_data->root_a,
             test_data->root_b,
             root_a_test,
