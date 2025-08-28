@@ -35,19 +35,24 @@ int main()
     double coeff_a = 0.0, coeff_b = 0.0, coeff_c = 0.0; // coefficients
     double root_a = 0.0, root_b = 0.0;                  // roots
 
-    printf("Input equation coefficients [ax² + bx + c = 0]:\n");
+    utils_colored_fprintf(
+        stdout,
+        ANSI_COLOR_BOLD_BLUE,
+        "Input equation coefficients [ax² + bx + c = 0]:\n"
+    );
 
-    printf("\tinput coeff [a]: ");
+    utils_colored_fprintf(stdout, ANSI_COLOR_BOLD_WHITE, "\tinput coeff [a]: ");
     if(input_double_until_correct(&coeff_a) == INPUT_ERR_EOF_REACHED) return 1;
 
-    printf("\tinput coeff [b]: ");
+    utils_colored_fprintf(stdout, ANSI_COLOR_BOLD_WHITE, "\tinput coeff [b]: ");
     if(input_double_until_correct(&coeff_b) == INPUT_ERR_EOF_REACHED) return 1;
 
-    printf("\tinput coeff [c]: ");
+    utils_colored_fprintf(stdout, ANSI_COLOR_BOLD_WHITE, "\tinput coeff [c]: ");
     if(input_double_until_correct(&coeff_c) == INPUT_ERR_EOF_REACHED) return 1;
 
     enum root_cnt_t root_cnt = solve_quadratic_equation(coeff_a, coeff_b, coeff_c, &root_a, &root_b);
-    print_quadratic_equation_solution(root_cnt, root_a, root_b);
+    print_quadratic_equation_solution(root_cnt, root_a, root_b, ANSI_COLOR_BOLD_BLUE);
+
     
     while(utils_gui_render_loop() == GUI_STATUS_CONTINUE) {
         utils_gui_clear_render(GUI_COLOR_BLACK);

@@ -6,7 +6,6 @@
 #include <linux/limits.h>
 
 #include "assertutils.h"
-#include "colorutils.h"
 
 void clear_stdin_buffer()
 {
@@ -107,23 +106,45 @@ char* bufferize_file(FILE *file)
     return file_buffer;
 }
 
-void print_quadratic_equation_solution(enum root_cnt_t root_cnt, double root_a, double root_b)
+void print_quadratic_equation_solution(enum root_cnt_t root_cnt, 
+    double root_a, double root_b, tty_mode_t mode)
 {
     switch(root_cnt) {
         case ROOT_CNT_NO_ROOTS:
-            printf("Equation has no solution\n");
+            utils_colored_fprintf(
+                stdout, 
+                mode, 
+                "Equation has no solution\n"
+            );
             break;
         case ROOT_CNT_1:
-            printf("Equation has 1 root: %lf\n", root_a);
+            utils_colored_fprintf(
+                stdout, 
+                mode, 
+                "Equation has 1 root: %lf\n", root_a
+            );
             break;
         case ROOT_CNT_2:
-            printf("Equation has 2 roots: %lf and %lf\n", root_a, root_b);
+            utils_colored_fprintf(
+                stdout, 
+                mode, 
+                "Equation has 2 roots: %lf and %lf\n", root_a, root_b
+            );
             break;
         case ROOT_CNT_INF:
-            printf("Equation is non-quadratic and contains infinite solutions\n");
+            utils_colored_fprintf(
+                stdout, 
+                mode, 
+                "Equation is non-quadratic and contains infinite solutions\n"
+            );
             break;
         case ROOT_CNT_LINEAR_EQ:
-            printf("Equation is linear. This program is not intended for solving linear equations.\n");
+            utils_colored_fprintf(
+                stdout, 
+                mode, 
+                "Equation is linear. This program is not intended "
+                "for solving linear equations.\n"
+            );
             break;
         case ROOT_CNT_NONE:
             break;

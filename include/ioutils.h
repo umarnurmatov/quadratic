@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "quadratic.h"
+#include "colorutils.h"
 
 /// @brief input error types
 enum input_err_t
@@ -51,8 +52,11 @@ size_t get_file_size(FILE* file);
 /// @return pointer to buffer 
 char* bufferize_file(FILE* file);
 
-/// @brief processes and prints quadratic equation solutions  
+/// @brief processes and prints quadratic equation solutions 
+///        to stdout with given mode 
 /// @param root_cnt see root_cnt_t for explanations
 /// @param root_a first root
 /// @param root_b second root
-void print_quadratic_equation_solution(enum root_cnt_t root_cnt, double root_a, double root_b);
+/// @param mode print mode
+void print_quadratic_equation_solution(enum root_cnt_t root_cnt, 
+    double root_a, double root_b, tty_mode_t mode);
