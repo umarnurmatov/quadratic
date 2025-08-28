@@ -1,5 +1,7 @@
 #include "threadutils.h"
 
+#include "utils.h"
+
 int utils_mtx_init(mtx_t *mtx, int type)
 {
     #if defined (SINGLE_THREAD)

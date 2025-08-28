@@ -3,8 +3,7 @@
 #include <stdio.h>
 
 #include "assertutils.h"
-
-#define ATTR_UNUSED __attribute__((unused))
+#include "utils.h"
 
 ATTR_UNUSED static const char* ANSI_COLOR_RED    = "\x1b[1;31m";
 ATTR_UNUSED static const char* ANSI_COLOR_GREEN  = "\x1b[1;32m";
