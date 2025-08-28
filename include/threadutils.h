@@ -2,6 +2,8 @@
 
 #include <threads.h>
 
+#define EXPR_UNUSED(expr) do { (void)expr; } while(0)
+
 /// @brief mtx_init wrapper
 /// @param mtx pointer to mutex
 /// @param type type of mutex
