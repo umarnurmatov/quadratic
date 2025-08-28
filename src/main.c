@@ -6,6 +6,7 @@
 #include "ioutils.h"
 #include "colorutils.h"
 #include "guiutils.h"
+#include "optutils.h"
 
 static const char* LOG_FILENAME = "log.txt";
 static const char* LOG_PATH = "log";
@@ -13,23 +14,49 @@ static const char* LOG_PATH = "log";
 static const int GUI_WINDOW_WIDTH = 1000;
 static const int GUI_WINDOW_HEIGHT = 800;
 
-// FIXME добавить argc argv
-int main()
+static const struct option long_options[] = {
+    {"help",      no_argument,       0, 0},
+    {"graphic",   no_argument,       0, 1},
+    {"log-level", required_argument, 0, 2}
+};
+
+// FIXME переделать на структуры 
+static const opt_t OPTION_NONE     = 0b00000000;
+static const opt_t OPTION_HELP     = 0b00000001;
+static const opt_t OPTION_GRAPHIC  = 0b00000010;
+static const opt_t OPTION_LOGLEVEL = 0b00000100;
+
+int main(int argc, char *argv[])
 {
     if(utils_init_log(LOG_FILENAME, LOG_PATH) != LOG_INIT_SUCCESS)
         return 1;
 
-    if(utils_gui_init(GUI_WINDOW_WIDTH, GUI_WINDOW_HEIGHT) != GUI_ERR_SUCCESS)
+    opt_t options_mask = OPTION_NONE;
+    if(utils_get_options(argc, argv, long_options, &options_mask) != OPTION_ERR_SUCCESS) 
         return 1;
-    utils_gui_set_coord_origin(GUI_WINDOW_WIDTH / 2, GUI_WINDOW_HEIGHT / 2);
+
+    if(utils_is_option_set(options_mask, OPTION_HELP))
+    {
+        // FIXME нормальный helptext
+        utils_colored_fprintf(stdout, ANSI_COLOR_YELLOW, "HELP\n");
+    }
 
     utils_colored_fprintf(
         stdout, 
         ANSI_COLOR_BOLD_GREEN, 
-        "#######################################################\n"
-        "### This is program for solving quadratic equations ###\n"
-        "###         © Nurmatov Umar aka n1njaeng1neer, 2025 ###\n"
-        "#######################################################\n"
+        "###########################################################\n"
+        "##     This is program for solving quadratic equations   ##\n"
+        "##             © Nurmatov Umar aka n1njaeng1neer, 2025   ##\n"
+        "###########################################################\n"
+        "##     **                                                ##\n" 
+        "##    *  *                                               ##\n" 
+        "##   *   *      **** *****   ***    ******* *** ****     ##\n" 
+        "##   *   *     ***** * ** *** ** **   **   *** ****      ##\n" 
+        "##  **   **    ** *** ****** ** ***  ***   **** ***      ##\n" 
+        "##  *     *   *** *** **    ***      ***   ***  **       ##\n" 
+        "##**      *  **************************************** ***##\n" 
+        "##        ***                                            ##\n" 
+        "###########################################################\n"
     );
 
     double coeff_a = 0.0, coeff_b = 0.0, coeff_c = 0.0; // coefficients
@@ -57,21 +84,21 @@ int main()
         if(utils_gui_init(GUI_WINDOW_WIDTH, GUI_WINDOW_HEIGHT) != GUI_ERR_SUCCESS)
             return 1;
         utils_gui_set_coord_origin(GUI_WINDOW_WIDTH / 2, GUI_WINDOW_HEIGHT / 2);
-    
+        
         while(utils_gui_event_loop() == GUI_STATUS_CONTINUE) {
-        utils_gui_clear_render(GUI_COLOR_BLACK);
+            utils_gui_clear_render(GUI_COLOR_BLACK);
 
-        if(utils_gui_render_coord_axes(GUI_COLOR_WHITE) != GUI_ERR_SUCCESS)
-            return 1;
+            if(utils_gui_render_coord_axes(GUI_COLOR_WHITE) != GUI_ERR_SUCCESS)
+                return 1;
 
-        if(utils_gui_render_graph(
-            GUI_COLOR_GREEN, coeff_a, coeff_b, coeff_c) != GUI_ERR_SUCCESS)
-            return 1;
+            if(utils_gui_render_graph(
+                GUI_COLOR_GREEN, coeff_a, coeff_b, coeff_c) != GUI_ERR_SUCCESS)
+                return 1;
 
-        utils_gui_show();
-    }
+            utils_gui_show();
+        }
 
-    utils_gui_end();
+        utils_gui_end();
     }
 
     utils_end_log(); // FIXME atexit возможно
