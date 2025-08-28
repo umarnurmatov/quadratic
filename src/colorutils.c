@@ -3,7 +3,7 @@
 #include <stdarg.h>
 #include <unistd.h>
 
-void utils_colored_fprintf(FILE *stream, const char *mode, const char *fmtstring, ...)
+void utils_colored_fprintf(FILE *stream, tty_mode_t mode, const char *fmtstring, ...)
 {
     utils_assert(stream != NULL);
     utils_assert(mode != NULL);
