@@ -60,7 +60,7 @@ void utils_gui_show();
 
 /// @brief GUI event processing loop
 /// @return see gui_status_t
-enum gui_status_t utils_gui_render_loop();
+enum gui_status_t utils_gui_event_loop();
 
 /// @brief destroy GUI backend
 void utils_gui_end();

@@ -53,8 +53,12 @@ int main()
     enum root_cnt_t root_cnt = solve_quadratic_equation(coeff_a, coeff_b, coeff_c, &root_a, &root_b);
     print_quadratic_equation_solution(root_cnt, root_a, root_b, ANSI_COLOR_BOLD_BLUE);
 
+    if(utils_is_option_set(options_mask, OPTION_GRAPHIC)) {
+        if(utils_gui_init(GUI_WINDOW_WIDTH, GUI_WINDOW_HEIGHT) != GUI_ERR_SUCCESS)
+            return 1;
+        utils_gui_set_coord_origin(GUI_WINDOW_WIDTH / 2, GUI_WINDOW_HEIGHT / 2);
     
-    while(utils_gui_render_loop() == GUI_STATUS_CONTINUE) {
+        while(utils_gui_event_loop() == GUI_STATUS_CONTINUE) {
         utils_gui_clear_render(GUI_COLOR_BLACK);
 
         if(utils_gui_render_coord_axes(GUI_COLOR_WHITE) != GUI_ERR_SUCCESS)
@@ -68,6 +72,7 @@ int main()
     }
 
     utils_gui_end();
+    }
 
     utils_end_log(); // FIXME atexit возможно
 
